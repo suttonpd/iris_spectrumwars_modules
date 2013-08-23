@@ -45,7 +45,7 @@ namespace phy
 {
 
 // export library symbols
-IRIS_COMPONENT_EXPORTS(PhyComponent, FileRawWriterTemplateComponent);
+IRIS_COMPONENT_EXPORTS(PhyComponent, FileRawWriterTemplateComponent)
 
 FileRawWriterTemplateComponent::FileRawWriterTemplateComponent(string name)
   : TemplatePhyComponent<FileRawWriterTemplateComponent>(
