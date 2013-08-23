@@ -2,7 +2,9 @@
 #define SPECTRUMWARSTXGUIWRAPPER_H
 
 #include <qapplication.h>
+#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
 #include "irisapi/Controller.h"
+#endif
 
 #include "SWTxGuiParams.h"
 #include "SWTxGuiCallback.h"
