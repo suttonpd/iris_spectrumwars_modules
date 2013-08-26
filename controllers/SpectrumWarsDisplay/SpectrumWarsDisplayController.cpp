@@ -69,8 +69,6 @@ void SpectrumWarsDisplayController::subscribeToEvents()
 
 void SpectrumWarsDisplayController::initialize()
 {
-  rx_.reset(new UdpSocketReceiver(port_x));
-
   plot_.reset(new SpectrumWarsDisplayPlot(512, nRows_x));
   plot_->setTitle("Spectrum Wars");
   plot_->setSpectrogramZAxisScale(0, 1e-6);
@@ -91,9 +89,7 @@ void SpectrumWarsDisplayController::initialize()
   plot_->setLevelLeft(45);
   plot_->setLevelRight(75);
 
-  socketThread_.reset(
-        new boost::thread(
-          boost::bind( &SpectrumWarsDisplayController::socketLoop, this, plot_ )));
+  socketThread_.reset( new boost::thread(boost::bind( &SpectrumWarsDisplayController::socketLoop, this )));
 }
 
 void SpectrumWarsDisplayController::processEvent(Event &e)
@@ -117,11 +113,13 @@ void SpectrumWarsDisplayController::destroy()
   socketThread_->join();
 }
 
-void SpectrumWarsDisplayController::socketLoop(boost::shared_ptr<SpectrumWarsDisplayPlot> plot)
+void SpectrumWarsDisplayController::socketLoop()
 {
   std::vector<uint8_t> buffer(64);
   int n;
   Packet p;
+  rx_.reset(new UdpSocketReceiver(port_x));
+
   try
   {
     while(!exit_)
@@ -132,9 +130,9 @@ void SpectrumWarsDisplayController::socketLoop(boost::shared_ptr<SpectrumWarsDis
         n = rx_->read(buffer.begin(), buffer.end());
         p.ParseFromArray(&buffer.front(), n);
         if(p.teamid() == "TeamA")
-          plot->setLevelLeft(p.count()*100/winCount_x);
+          plot_->setLevelLeft(p.count()*100/winCount_x);
         if(p.teamid() == "TeamB")
-          plot->setLevelRight(p.count()*100/winCount_x);
+          plot_->setLevelRight(p.count()*100/winCount_x);
       }
       else
       {
