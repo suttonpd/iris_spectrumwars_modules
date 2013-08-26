@@ -60,6 +60,7 @@ BOOST_AUTO_TEST_CASE(SpectrumWarsDisplayController_Init_Test)
 {
   SpectrumWarsDisplayController c;
   c.initialize();
+  c.destroy();
 }
 
 void threadMain1()
@@ -80,6 +81,9 @@ void threadMain1()
     c.processEvent(e);
     boost::this_thread::sleep(boost::posix_time::milliseconds(10));
   }
+
+  c.destroy();
+  delete [] data;
 }
 
 BOOST_AUTO_TEST_CASE(SpectrumWarsDisplayController_Process_Test)

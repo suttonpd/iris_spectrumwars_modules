@@ -55,7 +55,7 @@ public:
 	virtual void destroy();
 
 private:
-  void socketLoop(boost::shared_ptr<SpectrumWarsDisplayPlot> plot);
+  void socketLoop();
 
   int nRows_x;
   std::string spgrmCompName_x;
@@ -64,7 +64,7 @@ private:
 
   int count_;
   bool exit_;
-  boost::shared_ptr<SpectrumWarsDisplayPlot> plot_;
+  boost::scoped_ptr<SpectrumWarsDisplayPlot> plot_;
   boost::scoped_ptr<boost::thread> socketThread_;
   boost::scoped_ptr<UdpSocketReceiver> rx_;
 };
