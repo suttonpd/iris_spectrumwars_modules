@@ -18,7 +18,7 @@ SpectrumWarsTxGuiWidget::SpectrumWarsTxGuiWidget(SWTxGuiParams params,
   knob1_ = new KnobSpin("Frequency (MHz)", params_.minFreq, params_.maxFreq,
                         0.1, this);
   knob2_ = new KnobSpin("Bandwidth (MHz)", params_.minBW, params_.maxBW,
-                        0.1, this);
+                        0.25, this);
   knob3_ = new KnobSpin("Gain", params_.minGain, params_.maxGain,
                         0.1, this);
 

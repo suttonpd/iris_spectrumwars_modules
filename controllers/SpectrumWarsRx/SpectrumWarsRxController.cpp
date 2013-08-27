@@ -63,6 +63,10 @@ SpectrumWarsRxController::SpectrumWarsRxController()
       false, minGain_x, Interval<double>(0,1));
   registerParameter("maxgain", "Maximum gain", "1",
       false, maxGain_x, Interval<double>(0,1));
+  registerParameter("frontendrx", "Name of front end rx component",
+                    "usrprx1", false, frontEndRx_x);
+  registerParameter("frontendrxengine", "Engine containing our rx front end",
+                    "phyengine1", false, frontEndRxEngine_x);
 }
 
 void SpectrumWarsRxController::subscribeToEvents()
@@ -98,17 +102,50 @@ void SpectrumWarsRxController::destroy()
 
 void SpectrumWarsRxController::processFrequency(double f)
 {
-  LOG(LDEBUG) << "Frequency: " << f;
+  LOG(LDEBUG) << "Frequency: " << f << "MHz";
+  ReconfigSet r;
+  ParametricReconfig p;
+  p.engineName = frontEndRxEngine_x;
+  p.componentName = frontEndRx_x;
+  p.parameterName = "frequency";
+  stringstream str;
+  str << f*1000000;
+  p.parameterValue = str.str();
+
+  r.paramReconfigs.push_back(p);
+  reconfigureRadio(r);
 }
 
 void SpectrumWarsRxController::processBandwidth(double b)
 {
-  LOG(LDEBUG) << "Bandwidth: " << b;
+  LOG(LDEBUG) << "Bandwidth: " << b << "MHz";
+  ReconfigSet r;
+  ParametricReconfig p;
+  p.engineName = frontEndRxEngine_x;
+  p.componentName = frontEndRx_x;
+  p.parameterName = "rate";
+  stringstream str;
+  str << b*1000000;
+  p.parameterValue = str.str();
+
+  r.paramReconfigs.push_back(p);
+  reconfigureRadio(r);
 }
 
 void SpectrumWarsRxController::processGain(double g)
 {
   LOG(LDEBUG) << "Gain: " << g;
+  ReconfigSet r;
+  ParametricReconfig p;
+  p.engineName = frontEndRxEngine_x;
+  p.componentName = frontEndRx_x;
+  p.parameterName = "gain";
+  stringstream str;
+  str << g;
+  p.parameterValue = str.str();
+
+  r.paramReconfigs.push_back(p);
+  //reconfigureRadio(r);
 }
 
 

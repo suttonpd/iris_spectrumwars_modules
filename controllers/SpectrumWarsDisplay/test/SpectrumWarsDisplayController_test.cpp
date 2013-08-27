@@ -65,6 +65,7 @@ BOOST_AUTO_TEST_CASE(SpectrumWarsDisplayController_Init_Test)
 
 void threadMain1()
 {
+  // This thread acts as the controller thread
   SpectrumWarsDisplayController c;
   c.initialize();
 
