@@ -94,15 +94,11 @@ void SpectrumWarsDisplayController::initialize()
 
 void SpectrumWarsDisplayController::processEvent(Event &e)
 {
-
-  count_++;
-  //plot_->setLevelLeft(((512-count_)/512.0) * 100);
-  //plot_->setLevelRight((count_/512.0) * 100);
-
   //We've only subscribed to psdevent
   vector<float> data;
   for(int i=0;i<e.data.size();i++)
     data.push_back(boost::any_cast<float>(e.data[i]));
+
   plot_->plotNewData(data.begin(), data.end());
 }
 
