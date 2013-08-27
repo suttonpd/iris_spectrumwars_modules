@@ -33,6 +33,8 @@
 
 #include "SpectrumWarsDisplayController.h"
 #include <sstream>
+#include <algorithm>
+#include <string>
 #include "irisapi/LibraryDefs.h"
 #include "irisapi/Version.h"
 #include "packet.pb.h"
@@ -125,9 +127,12 @@ void SpectrumWarsDisplayController::socketLoop()
       {
         n = rx_->read(buffer.begin(), buffer.end());
         p.ParseFromArray(&buffer.front(), n);
-        if(p.teamid() == "TeamA")
+        string s = p.teamid();
+        transform(s.begin(), s.end(), s.begin(), ::tolower);
+        LOG(LDEBUG) << "Got scoring packet: " << s << " = " << p.count();
+        if(s == "teama")
           plot_->setLevelLeft(p.count()*100/winCount_x);
-        if(p.teamid() == "TeamB")
+        if(s == "teamb")
           plot_->setLevelRight(p.count()*100/winCount_x);
       }
       else

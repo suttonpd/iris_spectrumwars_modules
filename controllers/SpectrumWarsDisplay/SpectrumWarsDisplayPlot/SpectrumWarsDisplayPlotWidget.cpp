@@ -1,10 +1,12 @@
 #include "SpectrumWarsDisplayPlotWidget.h"
+#include "WinnerLabel.h"
 #include "graphics/qt/common/Spectrogramplot.h"
 #include "graphics/qt/common/Lineplot.h"
 #include "graphics/qt/common/Events.h"
-#include <qwt/qwt_thermo.h>
 
+#include <qwt/qwt_thermo.h>
 #include <qlayout.h>
+#include <qlabel.h>
 #include <qpushbutton.h>
 #include <algorithm>
 #include <boost/lambda/lambda.hpp>
@@ -104,11 +106,15 @@ void SpectrumWarsDisplayPlotWidget::setSpectrogramZAxisScale(double zMin, double
 void SpectrumWarsDisplayPlotWidget::setLevelLeft(double level)
 {
   tLeft_->setValue(level);
+  if(tLeft_->value() == tLeft_->maxValue())
+    WinnerLabel* label = new WinnerLabel("Team A Wins!");
 }
 
 void SpectrumWarsDisplayPlotWidget::setLevelRight(double level)
 {
   tRight_->setValue(level);
+  if(tRight_->value() == tRight_->maxValue())
+    WinnerLabel* label = new WinnerLabel("Team B Wins!");
 }
 
 void SpectrumWarsDisplayPlotWidget::autoscale()
