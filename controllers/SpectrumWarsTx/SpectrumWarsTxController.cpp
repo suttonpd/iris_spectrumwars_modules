@@ -60,9 +60,9 @@ SpectrumWarsTxController::SpectrumWarsTxController()
   registerParameter("maxbandwidth", "Maximum bandwidth", "5000000",
       false, maxBandwidth_x, Interval<double>(0,20000000));
   registerParameter("mingain", "Minimum gain", "0",
-      false, minGain_x, Interval<double>(0,1));
+      false, minGain_x, Interval<double>(0,20));
   registerParameter("maxgain", "Maximum gain", "1",
-      false, maxGain_x, Interval<double>(0,1));
+      false, maxGain_x, Interval<double>(0,20));
   registerParameter("frontendtx", "Name of front end tx component",
                     "usrptx1", false, frontEndTx_x);
   registerParameter("frontendtxengine", "Engine containing our tx front end",

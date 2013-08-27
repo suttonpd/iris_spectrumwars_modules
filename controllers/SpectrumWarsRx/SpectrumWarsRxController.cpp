@@ -60,9 +60,9 @@ SpectrumWarsRxController::SpectrumWarsRxController()
   registerParameter("maxbandwidth", "Maximum bandwidth", "5000000",
       false, maxBandwidth_x, Interval<double>(0,20000000));
   registerParameter("mingain", "Minimum gain", "0",
-      false, minGain_x, Interval<double>(0,1));
+      false, minGain_x, Interval<double>(0,40));
   registerParameter("maxgain", "Maximum gain", "1",
-      false, maxGain_x, Interval<double>(0,1));
+      false, maxGain_x, Interval<double>(0,40));
   registerParameter("frontendrx", "Name of front end rx component",
                     "usrprx1", false, frontEndRx_x);
   registerParameter("frontendrxengine", "Engine containing our rx front end",
