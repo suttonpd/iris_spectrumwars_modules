@@ -64,6 +64,8 @@ private:
   double maxBandwidth_x;
   double minGain_x;
   double maxGain_x;
+  std::string frontEndRx_x;
+  std::string frontEndRxEngine_x;
 
   boost::scoped_ptr<SpectrumWarsRxGui> gui_;
 };

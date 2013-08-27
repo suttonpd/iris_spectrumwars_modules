@@ -62,12 +62,13 @@ BOOST_AUTO_TEST_CASE(SpectrumWarsTxController_Init_Test)
 {
   SpectrumWarsTxController c;
   c.initialize();
+  c.destroy();
 }
 
 void threadMain1()
 {
+  // Load and start - controller runs own thread
   SpectrumWarsTxController c;
-  c.initialize();
   c.load();
   c.start();
   boost::this_thread::sleep(boost::posix_time::seconds(10));
