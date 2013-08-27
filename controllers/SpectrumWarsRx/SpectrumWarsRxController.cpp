@@ -145,7 +145,7 @@ void SpectrumWarsRxController::processGain(double g)
   p.parameterValue = str.str();
 
   r.paramReconfigs.push_back(p);
-  //reconfigureRadio(r);
+  reconfigureRadio(r);
 }
 
 
