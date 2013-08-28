@@ -68,14 +68,16 @@ void DataSetCounterComponent::registerPorts()
 {
   vector<int> validTypes = convertToTypeIdVector<IrisDataTypes>();
   registerInputPort("input1", validTypes);
-  registerOutputPort("output1", validTypes);
+  if(!isSink_x)
+    registerOutputPort("output1", validTypes);
 }
 
 void DataSetCounterComponent::calculateOutputTypes(
     std::map<std::string,int>& inputTypes,
     std::map<std::string,int>& outputTypes)
 {
-  outputTypes["output1"] = inputTypes["input1"];
+  if(!isSink_x)
+    outputTypes["output1"] = inputTypes["input1"];
 }
 
 template <class Tin, class Tout>
