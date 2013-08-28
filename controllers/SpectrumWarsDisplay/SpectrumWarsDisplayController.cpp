@@ -89,8 +89,8 @@ void SpectrumWarsDisplayController::initialize()
     plot_->setSpectrogramXAxisRange(frequency-(rate/2), frequency+(rate/2));
   }
 
-  plot_->setLevelLeft(45);
-  plot_->setLevelRight(75);
+  plot_->setLevelLeft(0);
+  plot_->setLevelRight(0);
 
   socketThread_.reset( new boost::thread(boost::bind( &SpectrumWarsDisplayController::socketLoop, this )));
 }
