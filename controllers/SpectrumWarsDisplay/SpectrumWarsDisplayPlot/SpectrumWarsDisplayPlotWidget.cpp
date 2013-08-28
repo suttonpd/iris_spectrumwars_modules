@@ -22,18 +22,33 @@ SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, 
   p_->setAxisAutoScale(QwtPlot::yLeft, false);
   s_ = new Spectrogramplot(numDataPoints, numRows);
   b_ = new QPushButton("Autoscale");
-  tLeft_ = new QwtThermo();
-  tRight_ = new QwtThermo();
-
   connect(b_, SIGNAL(clicked()), this, SLOT(autoscale()));
 
-  tLeft_->setPipeWidth(60);
+  tLeft_ = new QwtThermo();
+  tLeft_->setPipeWidth(100);
   tLeft_->setMaxValue(100);
   tLeft_->setFillBrush(QBrush(Qt::red));
+  QString a("<span style=\"font-size:16pt; font-weight:600;\">Team A</span>");
+  lLeft_ = new QLabel(a);
+  lLeft_->setTextFormat(Qt::RichText);
+  lLeft_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
-  tRight_->setPipeWidth(60);
+  tRight_ = new QwtThermo();
+  tRight_->setPipeWidth(100);
   tRight_->setMaxValue(100);
   tRight_->setFillBrush(QBrush(Qt::red));
+  QString b("<span style=\"font-size:16pt; font-weight:600;\">Team B</span>");
+  lRight_ = new QLabel(b);
+  lRight_->setTextFormat(Qt::RichText);
+  lRight_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+  QVBoxLayout* vLayoutLeft = new QVBoxLayout();
+  vLayoutLeft->addWidget(lLeft_);
+  vLayoutLeft->addWidget(tLeft_);
+
+  QVBoxLayout* vLayoutRight = new QVBoxLayout();
+  vLayoutRight->addWidget(lRight_);
+  vLayoutRight->addWidget(tRight_);
 
   QVBoxLayout* vLayout1 = new QVBoxLayout();
   vLayout1->addWidget(p_,1);
@@ -41,9 +56,9 @@ SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, 
   vLayout1->addWidget(b_);
 
   QHBoxLayout* hLayout1 = new QHBoxLayout(this);
-  hLayout1->addWidget(tLeft_);
+  hLayout1->addLayout(vLayoutLeft);
   hLayout1->addLayout(vLayout1);
-  hLayout1->addWidget(tRight_);
+  hLayout1->addLayout(vLayoutRight);
 
   numPoints_ = numDataPoints;
   data_ = new double[numPoints_];

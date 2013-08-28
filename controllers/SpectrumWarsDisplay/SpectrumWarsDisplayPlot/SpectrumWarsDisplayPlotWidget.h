@@ -10,6 +10,7 @@ class Lineplot;
 class Spectrogramplot;
 class QwtThermo;
 class QPushButton;
+class QLabel;
 
 class SpectrumWarsDisplayPlotWidget
   : public QWidget
@@ -42,7 +43,9 @@ private:
   Spectrogramplot* s_;
   QPushButton* b_;
   QwtThermo* tLeft_;
+  QLabel* lLeft_;
   QwtThermo* tRight_;
+  QLabel* lRight_;
 
   double* data_;
   int numPoints_;
