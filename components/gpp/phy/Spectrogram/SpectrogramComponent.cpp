@@ -73,7 +73,7 @@ SpectrogramComponent::SpectrogramComponent(std::string name)
 
   registerEvent(
       "psdevent",
-      "An event providing the current estimated PSD (in dBm)",
+      "An event providing the current estimated PSD (in dB)",
       TypeInfo< float >::identifier);
 }
 
