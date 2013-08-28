@@ -75,7 +75,7 @@ void SpectrumWarsRxCounterController::initialize()
 void SpectrumWarsRxCounterController::processEvent(Event &e)
 {
   std::vector<uint8_t> buffer;
-  if((++counter_%triggerNum_x)==0)
+  if(++counter_ >= triggerNum_x)
   {
     Packet p;
     p.set_teamid(id_x);
@@ -83,6 +83,7 @@ void SpectrumWarsRxCounterController::processEvent(Event &e)
     buffer.resize(p.ByteSize());
     p.SerializeWithCachedSizesToArray(&buffer.front());
     tx_->write(buffer.begin(), buffer.end());
+    counter_ = 0;
   }
 }
 

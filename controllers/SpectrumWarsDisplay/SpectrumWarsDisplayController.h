@@ -62,7 +62,8 @@ private:
   int port_x;
   double winCount_x;
 
-  int count_;
+  uint32_t countA_;
+  uint32_t countB_;
   bool exit_;
   boost::scoped_ptr<SpectrumWarsDisplayPlot> plot_;
   boost::scoped_ptr<boost::thread> socketThread_;
