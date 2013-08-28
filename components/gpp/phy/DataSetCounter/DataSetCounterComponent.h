@@ -63,6 +63,9 @@ class DataSetCounterComponent
   {
     return new DataSetCounterComponentImpl<Tin,Tout>(*comp);
   }
+
+protected:
+  bool isSink_x;          ///< Act as a sink? (Has no output).
 };
 
 template <class Tin, class Tout>
