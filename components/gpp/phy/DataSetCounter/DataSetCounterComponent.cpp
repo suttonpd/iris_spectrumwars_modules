@@ -55,6 +55,9 @@ DataSetCounterComponent::DataSetCounterComponent(std::string name)
                 "Paul Sutton",
                 "0.1")
 {
+  registerParameter("issink", "Act as a sink (do not provide output)", "false",
+      false, isSink_x);
+
   registerEvent(
       "havedataset",
       "Triggered when a dataset passes through",
@@ -82,24 +85,24 @@ void DataSetCounterComponentImpl<Tin,Tout>::initialize()
 template <class Tin, class Tout>
 void DataSetCounterComponentImpl<Tin,Tout>::process()
 {
-  //Get a DataSet from the input DataBuffer
   DataSet<Tinput1>* readDataSet = NULL;
   getInputDataSet("input1", readDataSet);
   std::size_t size = readDataSet->data.size();
 
-  //Get a DataSet from the output DataBuffer
-  DataSet<Tinput1>* writeDataSet = NULL;
-  getOutputDataSet("output1", writeDataSet, size);
-
-  writeDataSet->data = readDataSet->data;
-  writeDataSet->sampleRate = readDataSet->sampleRate;
-  writeDataSet->timeStamp = readDataSet->timeStamp;
   uint32_t x=0;
   activateEvent("havedataset", x);
 
-  //Release the DataSets
+  if(!isSink_x)
+  {
+    DataSet<Tinput1>* writeDataSet = NULL;
+    getOutputDataSet("output1", writeDataSet, size);
+    writeDataSet->data = readDataSet->data;
+    writeDataSet->sampleRate = readDataSet->sampleRate;
+    writeDataSet->timeStamp = readDataSet->timeStamp;
+    releaseOutputDataSet("output1", writeDataSet);
+  }
+
   releaseInputDataSet("input1", readDataSet);
-  releaseOutputDataSet("output1", writeDataSet);
 }
 
 template <class Tin, class Tout>
