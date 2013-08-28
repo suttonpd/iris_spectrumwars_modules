@@ -51,7 +51,8 @@ IRIS_CONTROLLER_EXPORTS(SpectrumWarsDisplayController);
 SpectrumWarsDisplayController::SpectrumWarsDisplayController()
   : Controller("SpectrumWarsDisplay", "Spectrum Wars main display controller",
                "Paul Sutton", "0.1")
-  ,count_(0)
+  ,countA_(0)
+  ,countB_(0)
   ,exit_(false)
 {
   registerParameter("spectrogramcomponent", "Name of spectrogram component",
@@ -128,12 +129,19 @@ void SpectrumWarsDisplayController::socketLoop()
         n = rx_->read(buffer.begin(), buffer.end());
         p.ParseFromArray(&buffer.front(), n);
         string s = p.teamid();
+        uint32_t c = p.count();
         transform(s.begin(), s.end(), s.begin(), ::tolower);
-        LOG(LDEBUG) << "Got scoring packet: " << s << " = " << p.count();
+        LOG(LDEBUG) << "Got scoring packet: " << s << " = " << c;
         if(s == "teama")
-          plot_->setLevelLeft(p.count()*100/winCount_x);
+        {
+          countA_ += c;
+          plot_->setLevelLeft(countA_*100/winCount_x);
+        }
         if(s == "teamb")
-          plot_->setLevelRight(p.count()*100/winCount_x);
+        {
+          countB_ += c;
+          plot_->setLevelRight(countB_*100/winCount_x);
+        }
       }
       else
       {
