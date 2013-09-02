@@ -4,6 +4,11 @@
 #include <qapplication.h>
 #include <qlabel.h>
 #include <qdesktopwidget.h>
+#include <stdlib.h>
+#include <boost/scoped_ptr.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/progress.hpp>
+#include <boost/bind.hpp>
 
 class WinnerLabel
   : public QLabel
@@ -26,6 +31,9 @@ public:
     setGeometry(wPos,hPos,600,480);
     show();
 
+    boost::scoped_ptr< boost::thread > thread1_;
+    thread1_.reset( new boost::thread( boost::bind(&WinnerLabel::musicThread,this) ) );
+
     timerId_ = startTimer(250);
   }
 
@@ -45,6 +53,11 @@ protected:
   }
 
 private:
+  void musicThread()
+  {
+    system("vlc /home/suttonpd/Desktop/Imperial_March.ogg");
+  }
+
   int timerId_;
   bool on_;
   QString message_;
