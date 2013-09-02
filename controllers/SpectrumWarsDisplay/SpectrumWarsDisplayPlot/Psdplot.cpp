@@ -159,8 +159,8 @@ void Psdplot::setLine1(double xLocation, double width)
   l1IndexPoints_[1] = xLocation+width/2;
   double yMin = axisScaleDiv(QwtPlot::yLeft)->lowerBound();
   double yMax = axisScaleDiv(QwtPlot::yLeft)->upperBound();
-  l1DataPoints_[0] = yMin+(yMax-yMin)/100;
-  l1DataPoints_[1] = yMin+(yMax-yMin)/100;
+  l1DataPoints_[0] = yMin+(yMax-yMin)/50;
+  l1DataPoints_[1] = yMin+(yMax-yMin)/50;
   line1_->setSamples(l1IndexPoints_, l1DataPoints_, 2);
   haveLine1_ = true;
 }
@@ -197,8 +197,8 @@ void Psdplot::linkScales()
   //TODO: reset the lines y position
   double yMin = axisScaleDiv(QwtPlot::yLeft)->lowerBound();
   double yMax = axisScaleDiv(QwtPlot::yLeft)->upperBound();
-  l1DataPoints_[0] = yMin+(yMax-yMin)/100;
-  l1DataPoints_[1] = yMin+(yMax-yMin)/100;
+  l1DataPoints_[0] = yMin+(yMax-yMin)/50;
+  l1DataPoints_[1] = yMin+(yMax-yMin)/50;
   l2DataPoints_[0] = yMin;
   l2DataPoints_[1] = yMin;
   if(haveLine1_)
