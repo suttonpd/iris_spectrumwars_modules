@@ -83,6 +83,8 @@ private:
   int counter_;
   double xMin_;
   double xMax_;
+  bool haveLine1_;
+  bool haveLine2_;
 };
 
 #endif // PSDPLOT_H

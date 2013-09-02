@@ -86,6 +86,13 @@ void SpectrumWarsDisplayController::initialize()
     s2 >> rate;
     plot_->setPlotXAxisRange(frequency-(rate/2), frequency+(rate/2));
     plot_->setSpectrogramXAxisRange(frequency-(rate/2), frequency+(rate/2));
+    plot_->setLine1(frequency, 0);
+    plot_->setLine1(frequency, 0);
+  }
+  else
+  {
+    plot_->setLine1(0, 0);
+    plot_->setLine1(0, 0);
   }
 
   plot_->setLevelLeft(0);
@@ -168,6 +175,7 @@ void SpectrumWarsDisplayController::processReconfig(Packet& p)
   double gain = p.gain();
 
   transform(s.begin(), s.end(), s.begin(), ::tolower);
+  LOG(LDEBUG) << "Got reconfig packet: " << s << ", " << freq << ", " << rate ;
   if(s == "teama")
   {
     plot_->setLine1(freq, rate);
