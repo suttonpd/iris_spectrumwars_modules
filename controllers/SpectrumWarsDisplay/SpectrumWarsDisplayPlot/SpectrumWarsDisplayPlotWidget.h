@@ -53,6 +53,7 @@ private:
   int numPoints_;
   int timerId_;
   bool haveNewData_;
+  bool haveWinner_;
 };
 
 #endif // SPECTRUMWARSDISPLAYPLOTWIDGET_H

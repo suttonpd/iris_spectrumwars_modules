@@ -17,6 +17,7 @@ namespace bl = boost::lambda;
 
 SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, int numRows, QWidget *parent)
   :QWidget(parent)
+  ,haveWinner_(false)
 {
   p_ = new Psdplot();
   p_->setAxisAutoScale(QwtPlot::yLeft, false);
@@ -121,15 +122,21 @@ void SpectrumWarsDisplayPlotWidget::setSpectrogramZAxisScale(double zMin, double
 void SpectrumWarsDisplayPlotWidget::setLevelLeft(double level)
 {
   tLeft_->setValue(level);
-  if(tLeft_->value() == tLeft_->maxValue())
+  if(tLeft_->value() == tLeft_->maxValue() && !haveWinner_)
+  {
+    haveWinner_ = true;
     WinnerLabel* label = new WinnerLabel("Team A Wins!");
+  }
 }
 
 void SpectrumWarsDisplayPlotWidget::setLevelRight(double level)
 {
   tRight_->setValue(level);
-  if(tRight_->value() == tRight_->maxValue())
+  if(tRight_->value() == tRight_->maxValue() && !haveWinner_)
+  {
+    haveWinner_ = true;
     WinnerLabel* label = new WinnerLabel("Team B Wins!");
+  }
 }
 
 void SpectrumWarsDisplayPlotWidget::setLine1(double xLocation, double width)
