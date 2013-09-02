@@ -70,6 +70,10 @@ void SpectrumWarsDisplayPlotWrapper::createWidgetSlot(int numDataPoints, int num
           widget_, SLOT(setLevelLeft(double)));
   connect(this, SIGNAL(setWidgetLevelRight(double)),
           widget_, SLOT(setLevelRight(double)));
+  connect(this, SIGNAL(setWidgetLine1(double,double)),
+          widget_, SLOT(setLine1(double,double)));
+  connect(this, SIGNAL(setWidgetLine2(double,double)),
+          widget_, SLOT(setLine2(double,double)));
 
   widget_->resize( 800, 600 );
   widget_->show();
@@ -165,4 +169,18 @@ void SpectrumWarsDisplayPlotWrapper::setLevelRight(double level)
   if(destroyed_)
     return;
   emit setWidgetLevelRight(level);
+}
+
+void SpectrumWarsDisplayPlotWrapper::setLine1(double xLocation, double width)
+{
+  if(destroyed_)
+    return;
+  emit setWidgetLine1(xLocation, width);
+}
+
+void SpectrumWarsDisplayPlotWrapper::setLine2(double xLocation, double width)
+{
+  if(destroyed_)
+    return;
+  emit setWidgetLine2(xLocation, width);
 }

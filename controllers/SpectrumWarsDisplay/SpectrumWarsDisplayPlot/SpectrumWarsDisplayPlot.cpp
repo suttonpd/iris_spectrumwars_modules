@@ -67,3 +67,13 @@ void SpectrumWarsDisplayPlot::setLevelRight(double level)
 {
   plot_->setLevelRight(level);
 }
+
+void SpectrumWarsDisplayPlot::setLine1(double xLocation, double width)
+{
+  plot_->setLine1(xLocation, width);
+}
+
+void SpectrumWarsDisplayPlot::setLine2(double xLocation, double width)
+{
+  plot_->setLine2(xLocation, width);
+}

@@ -39,6 +39,7 @@
 #include "boost/scoped_ptr.hpp"
 #include "irisapi/Controller.h"
 #include "SpectrumWarsRxGui/SpectrumWarsRxGui.h"
+#include "utility/UdpSocketTransmitter.h"
 
 namespace iris
 {
@@ -57,7 +58,13 @@ private:
   void processFrequency(double f);
   void processBandwidth(double b);
   void processGain(double g);
+  void processHaveData();
+  void notifyDisplay();   ///< Tell the display we've reconfigured
 
+  std::string id_x;       ///< Identifier for this node (must be 5 chars)
+  std::string address_x;  ///< UDP target IP address
+  int port_x;             ///< UDP port number
+  int triggerNum_x;       ///< Send a UDP packet every triggerNum_x packets
   double minFrequency_x;
   double maxFrequency_x;
   double minBandwidth_x;
@@ -68,6 +75,11 @@ private:
   std::string frontEndRxEngine_x;
 
   boost::scoped_ptr<SpectrumWarsRxGui> gui_;
+  uint32_t counter_;
+  boost::scoped_ptr<UdpSocketTransmitter> tx_;
+  double currentGain_;
+  double currentFreq_;
+  double currentRate_;
 };
 
 } // namespace iris

@@ -38,6 +38,7 @@
 #include <sstream>
 #include "irisapi/LibraryDefs.h"
 #include "irisapi/Version.h"
+#include "packet.pb.h"
 
 using namespace std;
 
@@ -50,7 +51,16 @@ IRIS_CONTROLLER_EXPORTS(SpectrumWarsRxController);
 SpectrumWarsRxController::SpectrumWarsRxController()
   : Controller("SpectrumWarsRx", "The SpectrumWars Rx controller",
                "Paul Sutton", "0.1")
+  ,counter_(0)
 {
+  registerParameter("id", "Identifier for this node",
+      "TeamA", false, id_x);
+  registerParameter("address", "Address of display node",
+      "127.0.0.1", false, address_x);
+  registerParameter("port", "Port of display node",
+      "12345", false, port_x);
+  registerParameter("triggernum", "Send a udp packet every triggernum packets",
+      "1000", false, triggerNum_x);
   registerParameter("minfrequency", "Minimum frequency", "2400000000",
       false, minFrequency_x, Interval<double>(0,6000000000));
   registerParameter("maxfrequency", "Maximum frequency", "2405000000",
@@ -71,11 +81,18 @@ SpectrumWarsRxController::SpectrumWarsRxController()
 
 void SpectrumWarsRxController::subscribeToEvents()
 {
+  subscribeToEvent("havedataset", "datasetcounter1");
 }
 
 void SpectrumWarsRxController::initialize()
 {
+  tx_.reset(new UdpSocketTransmitter(address_x, port_x));
+
   double m = 1000000.0;
+  currentGain_ = minGain_x;
+  currentFreq_ = minFrequency_x/m;
+  currentRate_ = minBandwidth_x/m;
+
   SWRxGuiParams p;
   p.minFreq = minFrequency_x/m;
   p.maxFreq = maxFrequency_x/m;
@@ -95,6 +112,8 @@ void SpectrumWarsRxController::processEvent(Event &e)
     processBandwidth(boost::any_cast<double>(e.data.front()));
   if(e.eventName == "guigain")
     processGain(boost::any_cast<double>(e.data.front()));
+  if(e.eventName == "havedataset")
+    processHaveData();
 }
 
 void SpectrumWarsRxController::destroy()
@@ -114,6 +133,9 @@ void SpectrumWarsRxController::processFrequency(double f)
 
   r.paramReconfigs.push_back(p);
   reconfigureRadio(r);
+
+  currentFreq_ = f*1000000;
+  notifyDisplay();
 }
 
 void SpectrumWarsRxController::processBandwidth(double b)
@@ -130,11 +152,15 @@ void SpectrumWarsRxController::processBandwidth(double b)
 
   r.paramReconfigs.push_back(p);
   reconfigureRadio(r);
+
+  currentRate_ = b*1000000;
+  notifyDisplay();
 }
 
 void SpectrumWarsRxController::processGain(double g)
 {
   LOG(LDEBUG) << "Gain: " << g;
+
   ReconfigSet r;
   ParametricReconfig p;
   p.engineName = frontEndRxEngine_x;
@@ -146,6 +172,38 @@ void SpectrumWarsRxController::processGain(double g)
 
   r.paramReconfigs.push_back(p);
   reconfigureRadio(r);
+
+  currentGain_ = g;
+  notifyDisplay();
+}
+
+void SpectrumWarsRxController::processHaveData()
+{
+  std::vector<uint8_t> buffer;
+  if(++counter_ >= triggerNum_x)
+  {
+    Packet p;
+    p.set_type(Packet_Type_COUNT);
+    p.set_teamid(id_x);
+    p.set_count(counter_);
+    buffer.resize(p.ByteSize());
+    p.SerializeWithCachedSizesToArray(&buffer.front());
+    tx_->write(buffer.begin(), buffer.end());
+    counter_ = 0;
+  }
+}
+
+void SpectrumWarsRxController::notifyDisplay()
+{
+  std::vector<uint8_t> buffer;
+  Packet p;
+  p.set_type(Packet_Type_RECONFIG);
+  p.set_frequency(currentFreq_);
+  p.set_rate(currentRate_);
+  p.set_gain(currentGain_);
+  buffer.resize(p.ByteSize());
+  p.SerializeWithCachedSizesToArray(&buffer.front());
+  tx_->write(buffer.begin(), buffer.end());
 }
 
 

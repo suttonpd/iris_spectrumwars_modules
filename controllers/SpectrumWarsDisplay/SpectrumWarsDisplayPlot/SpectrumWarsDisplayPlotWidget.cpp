@@ -1,7 +1,7 @@
 #include "SpectrumWarsDisplayPlotWidget.h"
 #include "WinnerLabel.h"
+#include "Psdplot.h"
 #include "graphics/qt/common/Spectrogramplot.h"
-#include "graphics/qt/common/Lineplot.h"
 #include "graphics/qt/common/Events.h"
 
 #include <qwt/qwt_thermo.h>
@@ -18,7 +18,7 @@ namespace bl = boost::lambda;
 SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, int numRows, QWidget *parent)
   :QWidget(parent)
 {
-  p_ = new Lineplot();
+  p_ = new Psdplot();
   p_->setAxisAutoScale(QwtPlot::yLeft, false);
   s_ = new Spectrogramplot(numDataPoints, numRows);
   b_ = new QPushButton("Autoscale");
@@ -36,7 +36,7 @@ SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, 
   tRight_ = new QwtThermo();
   tRight_->setPipeWidth(100);
   tRight_->setMaxValue(100);
-  tRight_->setFillBrush(QBrush(Qt::red));
+  tRight_->setFillBrush(QBrush(Qt::blue));
   QString b("<span style=\"font-size:16pt; font-weight:600;\">Team B</span>");
   lRight_ = new QLabel(b);
   lRight_->setTextFormat(Qt::RichText);
@@ -130,6 +130,16 @@ void SpectrumWarsDisplayPlotWidget::setLevelRight(double level)
   tRight_->setValue(level);
   if(tRight_->value() == tRight_->maxValue())
     WinnerLabel* label = new WinnerLabel("Team B Wins!");
+}
+
+void SpectrumWarsDisplayPlotWidget::setLine1(double xLocation, double width)
+{
+  p_->setLine1(xLocation, width);
+}
+
+void SpectrumWarsDisplayPlotWidget::setLine2(double xLocation, double width)
+{
+  p_->setLine2(xLocation, width);
 }
 
 void SpectrumWarsDisplayPlotWidget::autoscale()

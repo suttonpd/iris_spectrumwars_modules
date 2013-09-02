@@ -20,6 +20,15 @@
 //
 
 message Packet {
-  required string teamId = 1;
-  required uint32 count = 2;
+  enum Type {
+    COUNT = 1;
+    RECONFIG = 2;
+  }
+  required Type type = 1;
+  required string teamId = 2;
+
+  optional uint32 count = 3;
+  optional double frequency = 4;
+  optional double rate = 5;
+  optional double gain = 6;
 }

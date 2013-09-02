@@ -37,7 +37,6 @@
 #include <string>
 #include "irisapi/LibraryDefs.h"
 #include "irisapi/Version.h"
-#include "packet.pb.h"
 
 
 using namespace std;
@@ -128,20 +127,10 @@ void SpectrumWarsDisplayController::socketLoop()
       {
         n = rx_->read(buffer.begin(), buffer.end());
         p.ParseFromArray(&buffer.front(), n);
-        string s = p.teamid();
-        uint32_t c = p.count();
-        transform(s.begin(), s.end(), s.begin(), ::tolower);
-        LOG(LDEBUG) << "Got scoring packet: " << s << " = " << c;
-        if(s == "teama")
-        {
-          countA_ += c;
-          plot_->setLevelLeft(countA_*100/winCount_x);
-        }
-        if(s == "teamb")
-        {
-          countB_ += c;
-          plot_->setLevelRight(countB_*100/winCount_x);
-        }
+        if(p.type() == Packet_Type_COUNT)
+          processCount(p);
+        if(p.type() == Packet_Type_RECONFIG)
+          processReconfig(p);
       }
       else
       {
@@ -151,6 +140,42 @@ void SpectrumWarsDisplayController::socketLoop()
   }
   catch(boost::thread_interrupted& e)
   {}
+}
+
+void SpectrumWarsDisplayController::processCount(Packet& p)
+{
+  string s = p.teamid();
+  uint32_t c = p.count();
+  transform(s.begin(), s.end(), s.begin(), ::tolower);
+  LOG(LDEBUG) << "Got scoring packet: " << s << " = " << c;
+  if(s == "teama")
+  {
+    countA_ += c;
+    plot_->setLevelLeft(countA_*100/winCount_x);
+  }
+  if(s == "teamb")
+  {
+    countB_ += c;
+    plot_->setLevelRight(countB_*100/winCount_x);
+  }
+}
+
+void SpectrumWarsDisplayController::processReconfig(Packet& p)
+{
+  string s = p.teamid();
+  double freq = p.frequency();
+  double rate = p.rate();
+  double gain = p.gain();
+
+  transform(s.begin(), s.end(), s.begin(), ::tolower);
+  if(s == "teama")
+  {
+    plot_->setLine1(freq, rate);
+  }
+  if(s == "teamb")
+  {
+    plot_->setLine2(freq, rate);
+  }
 }
 
 } // namespace iris

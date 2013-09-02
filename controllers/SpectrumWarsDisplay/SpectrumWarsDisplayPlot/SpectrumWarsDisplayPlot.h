@@ -24,6 +24,8 @@ public:
   void setSpectrogramZAxisScale(double zMin, double zMax);
   void setLevelLeft(double level);
   void setLevelRight(double level);
+  void setLine1(double xLocation, double width);
+  void setLine2(double xLocation, double width);
 
 private:
   SpectrumWarsDisplayPlotWrapper* plot_;

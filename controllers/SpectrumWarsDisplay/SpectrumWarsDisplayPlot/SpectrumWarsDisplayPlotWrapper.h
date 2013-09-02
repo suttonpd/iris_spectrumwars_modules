@@ -25,6 +25,8 @@ public:
   void setSpectrogramZAxisScale(double zMin, double zMax);
   void setLevelLeft(double level);
   void setLevelRight(double level);
+  void setLine1(double xLocation, double width);
+  void setLine2(double xLocation, double width);
 
 public slots:
   void createWidgetSlot(int numDataPoints, int numRows);
@@ -44,6 +46,8 @@ signals:
   void setWidgetSZAxisScale(double zMin, double zMax);
   void setWidgetLevelLeft(double level);
   void setWidgetLevelRight(double level);
+  void setWidgetLine1(double xLocation, double width);
+  void setWidgetLine2(double xLocation, double width);
 
 private:
   SpectrumWarsDisplayPlotWidget* widget_;

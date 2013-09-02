@@ -1,5 +1,5 @@
 /**
- * \file lib/generic/modulation/Crc_test.cpp
+ * \file controllers/SpectrumWarsDisplay/SpectrumWarsDisplayPlot/test/SpectrumWarsDisplayPlot_test.cpp
  * \version 1.0
  *
  * \section COPYRIGHT
@@ -28,12 +28,12 @@
  *
  * \section DESCRIPTION
  *
- * Main test file for Waterfallplot class.
+ * Main test file for SpectrumWarsDisplayPlot class.
  */
 
-#define BOOST_TEST_MODULE Waterfallplot_Test
+#define BOOST_TEST_MODULE SpectrumWarsDisplayPlot_Test
 
-#include "Waterfallplot.h"
+#include "SpectrumWarsDisplayPlot.h"
 
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread/thread.hpp>
@@ -51,9 +51,8 @@ using namespace std;
 void threadMain1()
 {
   int n=2048;
-  Waterfallplot plot(n, n);
+  SpectrumWarsDisplayPlot plot(n, n);
   plot.setTitle("Float");
-  plot.setAxes(0,2,0,2,-1,1);
 
   float step = 2.0*PI/n;
   float* data = new float[n*2];
@@ -64,74 +63,27 @@ void threadMain1()
 
   for(int i=0;i<n;i++)
   {
+    plot.setLine1(i, 100);
+    plot.setLine2(n-i,100);
     plot.plotNewData(data+i, n);
     boost::this_thread::sleep(boost::posix_time::milliseconds(10));
   }
 }
 
-void threadMain2()
-{
-  int n=2048;
-  Waterfallplot plot(n, n);
-  plot.setTitle("Double");
-  plot.setAxes(0,2,0,2,-1,1);
+BOOST_AUTO_TEST_SUITE (SpectrumWarsDisplayPlot_Test)
 
-  double step = 2.0*PI/n;
-  double* data = new double[n*2];
-  for(int i=0;i<n*2;i++)
-    data[i] = sin(step*i);
-
-  plot.plotNewData(data, n);
-
-  for(int i=0;i<n;i++)
-  {
-    plot.plotNewData(data+i, n);
-    boost::this_thread::sleep(boost::posix_time::milliseconds(10));
-  }
-}
-
-void threadMain3()
-{
-  int n=2048;
-  Waterfallplot plot(n, n);
-  plot.setTitle("FloatVec");
-  plot.setAxes(0,2,0,2,-1,1);
-
-  double step = 2.0*PI/n;
-  std::vector<float> data;
-  data.resize(n*2);
-  for(int i=0;i<n*2;i++)
-    data[i] = sin(step*i);
-
-  plot.plotNewData(data.begin(), data.begin()+n);
-
-  for(int i=0;i<n;i++)
-  {
-    plot.plotNewData(data.begin()+i, data.begin()+i+n);
-    boost::this_thread::sleep(boost::posix_time::milliseconds(10));
-  }
-}
-
-BOOST_AUTO_TEST_SUITE (Waterfallplot_Test)
-
-BOOST_AUTO_TEST_CASE(Waterfallplot_Init_Test)
+BOOST_AUTO_TEST_CASE(SpectrumWarsDisplayPlot_Init_Test)
 {
   int argc = 1;
-  char* argv[] = { const_cast<char *>("Waterfallplot_Init_Test"), NULL };
+  char* argv[] = { const_cast<char *>("SpectrumWarsDisplayPlot_Init_Test"), NULL };
   QApplication a(argc, argv);
 
   boost::scoped_ptr< boost::thread > thread1_;
-  boost::scoped_ptr< boost::thread > thread2_;
-  boost::scoped_ptr< boost::thread > thread3_;
 
   thread1_.reset( new boost::thread( &threadMain1 ) );
-  thread2_.reset( new boost::thread( &threadMain2 ) );
-  thread3_.reset( new boost::thread( &threadMain3 ) );
 
   qApp->exec();
   thread1_->join();
-  thread2_->join();
-  thread3_->join();
 }
 
 BOOST_AUTO_TEST_SUITE_END()

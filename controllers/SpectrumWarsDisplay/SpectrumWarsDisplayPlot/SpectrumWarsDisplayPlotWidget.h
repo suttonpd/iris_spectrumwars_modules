@@ -6,7 +6,7 @@
 #include <complex>
 
 class RealDataEvent;
-class Lineplot;
+class Psdplot;
 class Spectrogramplot;
 class QwtThermo;
 class QPushButton;
@@ -32,6 +32,8 @@ public slots:
   void setSpectrogramZAxisScale(double zMin, double zMax);
   void setLevelLeft(double level);
   void setLevelRight(double level);
+  void setLine1(double xLocation, double width);
+  void setLine2(double xLocation, double width);
   void autoscale();
 
 protected:
@@ -39,7 +41,7 @@ protected:
 
 private:
   void plotData(RealDataEvent* e);
-  Lineplot* p_;
+  Psdplot* p_;
   Spectrogramplot* s_;
   QPushButton* b_;
   QwtThermo* tLeft_;

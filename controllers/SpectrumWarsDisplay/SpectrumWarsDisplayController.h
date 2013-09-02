@@ -40,6 +40,7 @@
 #include <boost/thread/thread.hpp>
 #include "SpectrumWarsDisplayPlot/SpectrumWarsDisplayPlot.h"
 #include "utility/UdpSocketReceiver.h"
+#include "packet.pb.h"
 
 namespace iris
 {
@@ -56,6 +57,8 @@ public:
 
 private:
   void socketLoop();
+  void processCount(Packet& p);
+  void processReconfig(Packet& p);
 
   int nRows_x;
   std::string spgrmCompName_x;
