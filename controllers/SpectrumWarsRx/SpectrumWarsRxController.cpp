@@ -198,6 +198,7 @@ void SpectrumWarsRxController::notifyDisplay()
   std::vector<uint8_t> buffer;
   Packet p;
   p.set_type(Packet_Type_RECONFIG);
+  p.set_teamid(id_x);
   p.set_frequency(currentFreq_);
   p.set_rate(currentRate_);
   p.set_gain(currentGain_);
