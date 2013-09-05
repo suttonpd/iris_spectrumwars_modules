@@ -49,7 +49,6 @@ IF(IRIS_HAVE_SPECTRUMWARSTXGUI AND PROTOBUF_FOUND)
   ADD_LIBRARY(controller_spectrumwarsrx SHARED ${sources} ${PROTO_SRCS} ${PROTO_HDRS})
   TARGET_LINK_LIBRARIES(controller_spectrumwarsrx spectrumwarsrxgui ${PROTOBUF_LIBRARIES})
   SET_TARGET_PROPERTIES(controller_spectrumwarsrx PROPERTIES OUTPUT_NAME "spectrumwarsrx")
-  SET_TARGET_PROPERTIES(controller_spectrumwarsrx PROPERTIES DEFINE_SYMBOL "IRIS_CORE_DLL_EXPORTS")
   IRIS_INSTALL(controller_spectrumwarsrx)
   IRIS_APPEND_INSTALL_LIST("spectrumwarsrx")
 

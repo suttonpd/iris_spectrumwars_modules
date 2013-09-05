@@ -44,7 +44,6 @@ IF(IRIS_HAVE_SPECTRUMWARSTXGUI)
   ADD_LIBRARY(controller_spectrumwarstx SHARED ${sources})
   TARGET_LINK_LIBRARIES(controller_spectrumwarstx spectrumwarstxgui)
   SET_TARGET_PROPERTIES(controller_spectrumwarstx PROPERTIES OUTPUT_NAME "spectrumwarstx")
-  SET_TARGET_PROPERTIES(controller_spectrumwarstx PROPERTIES DEFINE_SYMBOL "IRIS_CORE_DLL_EXPORTS")
   IRIS_INSTALL(controller_spectrumwarstx)
   IRIS_APPEND_INSTALL_LIST("spectrumwarstx")
 

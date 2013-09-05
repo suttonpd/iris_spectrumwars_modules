@@ -51,7 +51,6 @@ IF(IRIS_HAVE_SPECTRUMWARSDISPLAYPLOT AND PROTOBUF_FOUND)
   TARGET_LINK_LIBRARIES(controller_spectrumwarsdisplay spectrumwarsdisplayplot ${PROTOBUF_LIBRARIES})
 
   SET_TARGET_PROPERTIES(controller_spectrumwarsdisplay PROPERTIES OUTPUT_NAME "spectrumwarsdisplay")
-  SET_TARGET_PROPERTIES(controller_spectrumwarsdisplay PROPERTIES DEFINE_SYMBOL "IRIS_CORE_DLL_EXPORTS")
   IRIS_INSTALL(controller_spectrumwarsdisplay)
   IRIS_APPEND_INSTALL_LIST("spectrumwarsdisplay")
 
