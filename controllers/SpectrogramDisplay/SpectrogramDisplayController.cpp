@@ -60,6 +60,7 @@ void SpectrogramDisplayController::subscribeToEvents()
 void SpectrogramDisplayController::initialize()
 {
   plot_.reset(new Realplot());
+  plot_->setYAxisScale(-100, 0);
 }
 
 void SpectrogramDisplayController::processEvent(Event &e)
