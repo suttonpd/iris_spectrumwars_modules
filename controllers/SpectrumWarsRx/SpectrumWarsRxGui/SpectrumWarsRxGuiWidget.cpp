@@ -6,7 +6,7 @@
 
 #include <QLayout>
 #include <QDoubleSpinBox>
-
+#include <QShortcut>
 
 SpectrumWarsRxGuiWidget::SpectrumWarsRxGuiWidget(SWRxGuiParams params,
                                                  SWRxGuiCallback* callback,
@@ -17,10 +17,24 @@ SpectrumWarsRxGuiWidget::SpectrumWarsRxGuiWidget(SWRxGuiParams params,
   callback_ = callback;
   knob1_ = new KnobSpin("Frequency (MHz)", params_.minFreq, params_.maxFreq,
                         0.1, this);
+  QShortcut* s11_ = new QShortcut(QKeySequence("Q"), this);
+  connect(s11_, SIGNAL(activated()), knob1_->spin(), SLOT(stepUp()));
+  QShortcut* s12_ = new QShortcut(QKeySequence("A"), this);
+  connect(s12_, SIGNAL(activated()), knob1_->spin(), SLOT(stepDown()));
+
   knob2_ = new KnobSpin("Bandwidth (MHz)", params_.minBW, params_.maxBW,
                         0.25, this);
+  QShortcut* s21_ = new QShortcut(QKeySequence("W"), this);
+  connect(s21_, SIGNAL(activated()), knob2_->spin(), SLOT(stepUp()));
+  QShortcut* s22_ = new QShortcut(QKeySequence("S"), this);
+  connect(s22_, SIGNAL(activated()), knob2_->spin(), SLOT(stepDown()));
+
   knob3_ = new KnobSpin("Gain", params_.minGain, params_.maxGain,
                         0.1, this);
+  QShortcut* s31_ = new QShortcut(QKeySequence("E"), this);
+  connect(s31_, SIGNAL(activated()), knob3_->spin(), SLOT(stepUp()));
+  QShortcut* s32_ = new QShortcut(QKeySequence("D"), this);
+  connect(s32_, SIGNAL(activated()), knob3_->spin(), SLOT(stepDown()));
 
   connect(knob1_, SIGNAL(valueChanged(double)),
           this, SLOT(setFrequency(double)));

@@ -16,6 +16,8 @@ public:
     KnobSpin(const QString &title, double min, double max, double step,
              QWidget *parent = NULL);
     virtual QSize sizeHint() const;
+    QwtKnob* knob(){return knob_;}
+    QDoubleSpinBox* spin(){return spin_;}
 
 public slots:
     void setValue(double value);
