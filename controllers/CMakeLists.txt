@@ -57,6 +57,7 @@ ADD_SUBDIRECTORY(SpectrumWarsDisplay)
 ADD_SUBDIRECTORY(SpectrumWarsRx)
 ADD_SUBDIRECTORY(SpectrumWarsRxCounter)
 ADD_SUBDIRECTORY(SpectrumWarsTx)
+ADD_SUBDIRECTORY(SpectrumWarsTxSweeper)
 
 ########################################################################
 # List controllers to be installed/not installed
