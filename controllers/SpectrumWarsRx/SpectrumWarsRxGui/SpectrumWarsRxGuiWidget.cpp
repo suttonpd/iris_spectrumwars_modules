@@ -30,7 +30,7 @@ SpectrumWarsRxGuiWidget::SpectrumWarsRxGuiWidget(SWRxGuiParams params,
   connect(s22_, SIGNAL(activated()), knob2_->spin(), SLOT(stepDown()));
 
   knob3_ = new KnobSpin("Gain", params_.minGain, params_.maxGain,
-                        0.1, this);
+                        1.0, this);
   QShortcut* s31_ = new QShortcut(QKeySequence("E"), this);
   connect(s31_, SIGNAL(activated()), knob3_->spin(), SLOT(stepUp()));
   QShortcut* s32_ = new QShortcut(QKeySequence("D"), this);
