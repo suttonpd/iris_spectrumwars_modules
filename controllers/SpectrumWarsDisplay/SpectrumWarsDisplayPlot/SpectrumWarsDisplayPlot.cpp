@@ -77,3 +77,8 @@ void SpectrumWarsDisplayPlot::setLine2(double xLocation, double width)
 {
   plot_->setLine2(xLocation, width);
 }
+
+void SpectrumWarsDisplayPlot::setvLine1(double xLocation)
+{
+  plot_->setvLine1(xLocation);
+}

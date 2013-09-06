@@ -39,6 +39,7 @@
 #include <cstdlib>
 #include "irisapi/LibraryDefs.h"
 #include "irisapi/Version.h"
+#include "packet.pb.h"
 
 using namespace std;
 
@@ -53,6 +54,12 @@ SpectrumWarsTxSweeperController::SpectrumWarsTxSweeperController()
                "Paul Sutton", "0.1")
   ,exit_(false)
 {
+  registerParameter("id", "Identifier for this node",
+      "Primary", false, id_x);
+  registerParameter("address", "Address of display node",
+      "127.0.0.1", false, address_x);
+  registerParameter("port", "Port of display node",
+      "12345", false, port_x);
   registerParameter("intervalms", "Interval between reconfigurations (ms)",
       "5000", false, intervalMs_x);
   registerParameter("minfrequency", "Minimum frequency", "2400000000",
@@ -75,6 +82,7 @@ void SpectrumWarsTxSweeperController::subscribeToEvents()
 
 void SpectrumWarsTxSweeperController::initialize()
 {
+  tx_.reset(new UdpSocketTransmitter(address_x, port_x));
   thread_.reset( new boost::thread(boost::bind( &SpectrumWarsTxSweeperController::threadLoop, this )));
 }
 
@@ -91,7 +99,7 @@ void SpectrumWarsTxSweeperController::destroy()
 
 void SpectrumWarsTxSweeperController::threadLoop()
 {
-  double f = minF_x + (maxF_x-minF_x)/2.0;
+  currentFreq_ = minF_x + (maxF_x-minF_x)/2.0;
   double step = 0.0;
 
   try
@@ -106,12 +114,12 @@ void SpectrumWarsTxSweeperController::threadLoop()
       LOG(LDEBUG) << "Sweeping to " << newF << "MHz";
 
       // Sweep to it
-      step = (newF-f)/10;
+      step = (newF-currentFreq_)/10;
       for(int i=0;i<10;i++)
       {
-        f += step;
-        setFrequency(f);
-        boost::this_thread::sleep(boost::posix_time::milliseconds(200));
+        currentFreq_ += step;
+        setFrequency(currentFreq_);
+        boost::this_thread::sleep(boost::posix_time::milliseconds(100));
       }
       boost::this_thread::sleep(boost::posix_time::milliseconds(intervalMs_x));
     }
@@ -134,6 +142,17 @@ void SpectrumWarsTxSweeperController::setFrequency(double f)
 
   r.paramReconfigs.push_back(p);
   reconfigureRadio(r);
+
+  std::vector<uint8_t> buffer;
+  Packet pack;
+  pack.set_type(Packet_Type_RECONFIG);
+  pack.set_teamid(id_x);
+  pack.set_frequency(currentFreq_);
+  pack.set_rate(bandwidth_x);
+  pack.set_gain(gain_x);
+  buffer.resize(pack.ByteSize());
+  pack.SerializeWithCachedSizesToArray(&buffer.front());
+  tx_->write(buffer.begin(), buffer.end());
 }
 
 } // namespace iris

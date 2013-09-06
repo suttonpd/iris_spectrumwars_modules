@@ -61,6 +61,7 @@ Psdplot::Psdplot(QWidget *parent)
   ,xMax_(0)
   ,haveLine1_(false)
   ,haveLine2_(false)
+  ,havevLine1_(false)
 {
   counter_ = 0;
   numPoints_ = 1;
@@ -93,6 +94,11 @@ Psdplot::Psdplot(QWidget *parent)
   line2_->setPen(QPen(Qt::blue, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
   line2_->setStyle(QwtPlotCurve::Lines);
   line2_->attach(this);
+
+  vline1_ = new QwtPlotCurve("vLine1");
+  vline1_->setPen(QPen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+  vline1_->setStyle(QwtPlotCurve::Lines);
+  vline1_->attach(this);
 
   enableAxis(QwtPlot::yRight);
   QwtScaleWidget *leftAxis = axisWidget(QwtPlot::yLeft);
@@ -176,6 +182,18 @@ void Psdplot::setLine2(double xLocation, double width)
   haveLine2_ = true;
 }
 
+void Psdplot::setvLine1(double xLocation)
+{
+  vl1IndexPoints_[0] = xLocation;
+  vl1IndexPoints_[1] = xLocation;
+  double yMin = axisScaleDiv(QwtPlot::yLeft)->lowerBound();
+  double yMax = axisScaleDiv(QwtPlot::yLeft)->upperBound();
+  vl1DataPoints_[0] = yMin;
+  vl1DataPoints_[1] = yMax;
+  vline1_->setSamples(vl1IndexPoints_, vl1DataPoints_, 2);
+  havevLine1_ = true;
+}
+
 void Psdplot::setXAxisRange(double xMin, double xMax)
 {
   xMin_ = xMin;
@@ -201,9 +219,13 @@ void Psdplot::linkScales()
   l1DataPoints_[1] = yMin+(yMax-yMin)/50;
   l2DataPoints_[0] = yMin;
   l2DataPoints_[1] = yMin;
+  vl1DataPoints_[0] = yMin;
+  vl1DataPoints_[1] = yMax;
   if(haveLine1_)
     line1_->setSamples(l1IndexPoints_, l1DataPoints_, 2);
   if(haveLine2_)
     line2_->setSamples(l2IndexPoints_, l2DataPoints_, 2);
+  if(havevLine1_)
+    vline1_->setSamples(vl1IndexPoints_, vl1DataPoints_, 2);
   setAxisScaleDiv(QwtPlot::yRight, *axisScaleDiv(QwtPlot::yLeft));
 }

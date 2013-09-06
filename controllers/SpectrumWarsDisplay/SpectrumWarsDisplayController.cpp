@@ -184,6 +184,10 @@ void SpectrumWarsDisplayController::processReconfig(Packet& p)
   {
     plot_->setLine2(freq, rate);
   }
+  if(s == "primary")
+  {
+    plot_->setvLine1(freq);
+  }
 }
 
 } // namespace iris

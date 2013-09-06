@@ -57,6 +57,7 @@ public:
   void setData(double* data, int n);
   void setLine1(double xLocation, double width);
   void setLine2(double xLocation, double width);
+  void setvLine1(double xLocation);
   void setXAxisRange(double xMin, double xMax);
   void resetZoom();
 
@@ -67,6 +68,7 @@ private:
   QwtPlotCurve* curve_;
   QwtPlotCurve* line1_;
   QwtPlotCurve* line2_;
+  QwtPlotCurve* vline1_;
 
   QwtPlotPanner* panner_;
   QwtPlotZoomer* zoomer_;
@@ -78,6 +80,8 @@ private:
   double l1DataPoints_[2];
   double l2IndexPoints_[2];
   double l2DataPoints_[2];
+  double vl1IndexPoints_[2];
+  double vl1DataPoints_[2];
 
   int64_t numPoints_;
   int counter_;
@@ -85,6 +89,7 @@ private:
   double xMax_;
   bool haveLine1_;
   bool haveLine2_;
+  bool havevLine1_;
 };
 
 #endif // PSDPLOT_H

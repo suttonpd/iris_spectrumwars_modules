@@ -27,6 +27,7 @@ public:
   void setLevelRight(double level);
   void setLine1(double xLocation, double width);
   void setLine2(double xLocation, double width);
+  void setvLine1(double xLocation);
 
 public slots:
   void createWidgetSlot(int numDataPoints, int numRows);
@@ -48,6 +49,7 @@ signals:
   void setWidgetLevelRight(double level);
   void setWidgetLine1(double xLocation, double width);
   void setWidgetLine2(double xLocation, double width);
+  void setWidgetvLine1(double xLocation);
 
 private:
   SpectrumWarsDisplayPlotWidget* widget_;

@@ -25,6 +25,7 @@ MESSAGE(STATUS "  Processing spectrumwarstxsweeper.")
 ########################################################################
 # Add includes and dependencies
 ########################################################################
+FIND_PACKAGE( Protobuf )
 
 ########################################################################
 # Build the library from source files
@@ -33,13 +34,23 @@ SET(sources
 	SpectrumWarsTxSweeperController.cpp
 )
 
-# Static library to be used in tests
-ADD_LIBRARY(controller_spectrumwarstxsweeper_static STATIC ${sources})
+IF(PROTOBUF_FOUND)
+    INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIRS})
+    PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS packet.proto)
+    INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
-# Shared library to be used in radios
-ADD_LIBRARY(controller_spectrumwarstxsweeper SHARED ${sources})
-SET_TARGET_PROPERTIES(controller_spectrumwarstxsweeper PROPERTIES OUTPUT_NAME "spectrumwarstxsweeper")
-IRIS_INSTALL(controller_spectrumwarstxsweeper)
-IRIS_APPEND_INSTALL_LIST("spectrumwarstxsweeper")
+    # Static library to be used in tests
+    ADD_LIBRARY(controller_spectrumwarstxsweeper_static STATIC ${sources} ${PROTO_SRCS} ${PROTO_HDRS})
+    TARGET_LINK_LIBRARIES(controller_spectrumwarstxsweeper_static ${PROTOBUF_LIBRARIES})
 
-ADD_SUBDIRECTORY(test)
+    # Shared library to be used in radios
+    ADD_LIBRARY(controller_spectrumwarstxsweeper SHARED ${sources} ${PROTO_SRCS} ${PROTO_HDRS})
+    TARGET_LINK_LIBRARIES(controller_spectrumwarstxsweeper ${PROTOBUF_LIBRARIES})
+    SET_TARGET_PROPERTIES(controller_spectrumwarstxsweeper PROPERTIES OUTPUT_NAME "spectrumwarstxsweeper")
+    IRIS_INSTALL(controller_spectrumwarstxsweeper)
+    IRIS_APPEND_INSTALL_LIST("spectrumwarstxsweeper")
+
+    ADD_SUBDIRECTORY(test)
+ELSE(PROTOBUF_FOUND)
+    IRIS_APPEND_NOINSTALL_LIST("spectrumwarstxsweeper")
+ENDIF(PROTOBUF_FOUND)

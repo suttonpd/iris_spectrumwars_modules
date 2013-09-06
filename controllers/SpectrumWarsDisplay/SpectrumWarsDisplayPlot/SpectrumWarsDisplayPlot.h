@@ -26,6 +26,7 @@ public:
   void setLevelRight(double level);
   void setLine1(double xLocation, double width);
   void setLine2(double xLocation, double width);
+  void setvLine1(double xLocation);
 
 private:
   SpectrumWarsDisplayPlotWrapper* plot_;

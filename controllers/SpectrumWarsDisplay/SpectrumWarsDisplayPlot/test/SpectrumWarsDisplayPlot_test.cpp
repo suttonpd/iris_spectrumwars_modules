@@ -65,6 +65,7 @@ void threadMain1()
   {
     plot.setLine1(i, 100);
     plot.setLine2(n-i,100);
+    plot.setvLine1(i);
     plot.plotNewData(data+i, n);
     boost::this_thread::sleep(boost::posix_time::milliseconds(10));
   }

@@ -40,6 +40,7 @@
 #include "irisapi/Controller.h"
 #include <boost/scoped_ptr.hpp>
 #include <boost/thread/thread.hpp>
+#include "utility/UdpSocketTransmitter.h"
 
 namespace iris
 {
@@ -58,6 +59,9 @@ private:
   void threadLoop();
   void setFrequency(double f);
 
+  std::string id_x;       ///< Identifier for this node (must be 5 chars)
+  std::string address_x;  ///< UDP target IP address
+  int port_x;             ///< UDP port number
   int intervalMs_x;
   double minF_x;
   double maxF_x;
@@ -66,8 +70,10 @@ private:
   std::string frontEndTx_x;
   std::string frontEndTxEngine_x;
 
+  double currentFreq_;
   boost::scoped_ptr<boost::thread> thread_;
   bool exit_;
+  boost::scoped_ptr<UdpSocketTransmitter> tx_;
 };
 
 } // namespace iris

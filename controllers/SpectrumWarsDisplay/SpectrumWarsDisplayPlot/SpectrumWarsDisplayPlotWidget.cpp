@@ -149,6 +149,11 @@ void SpectrumWarsDisplayPlotWidget::setLine2(double xLocation, double width)
   p_->setLine2(xLocation, width);
 }
 
+void SpectrumWarsDisplayPlotWidget::setvLine1(double xLocation)
+{
+  p_->setvLine1(xLocation);
+}
+
 void SpectrumWarsDisplayPlotWidget::autoscale()
 {
   double min = s_->min();
