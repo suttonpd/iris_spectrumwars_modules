@@ -96,7 +96,7 @@ Psdplot::Psdplot(QWidget *parent)
   line2_->attach(this);
 
   vline1_ = new QwtPlotCurve("vLine1");
-  vline1_->setPen(QPen(Qt::black, 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+  vline1_->setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
   vline1_->setStyle(QwtPlotCurve::Lines);
   vline1_->attach(this);
 
@@ -189,7 +189,7 @@ void Psdplot::setvLine1(double xLocation)
   double yMin = axisScaleDiv(QwtPlot::yLeft)->lowerBound();
   double yMax = axisScaleDiv(QwtPlot::yLeft)->upperBound();
   vl1DataPoints_[0] = yMin;
-  vl1DataPoints_[1] = yMax;
+  vl1DataPoints_[1] = yMax - (yMax-yMin)/2.0;
   vline1_->setSamples(vl1IndexPoints_, vl1DataPoints_, 2);
   havevLine1_ = true;
 }
@@ -220,7 +220,7 @@ void Psdplot::linkScales()
   l2DataPoints_[0] = yMin;
   l2DataPoints_[1] = yMin;
   vl1DataPoints_[0] = yMin;
-  vl1DataPoints_[1] = yMax;
+  vl1DataPoints_[1] = yMax - (yMax-yMin)/2.0;
   if(haveLine1_)
     line1_->setSamples(l1IndexPoints_, l1DataPoints_, 2);
   if(haveLine2_)
