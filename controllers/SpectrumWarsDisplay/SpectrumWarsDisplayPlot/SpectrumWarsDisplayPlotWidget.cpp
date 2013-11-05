@@ -15,15 +15,22 @@ using namespace std;
 namespace bl = boost::lambda;
 
 
-SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, int numRows, QWidget *parent)
+SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints,
+                                                             int numRows,
+                                                             SWDisplayPlotCallback* callback,
+                                                             QWidget *parent)
   :QWidget(parent)
   ,haveWinner_(false)
 {
+  callback_ = callback;
+
   p_ = new Psdplot();
   p_->setAxisAutoScale(QwtPlot::yLeft, false);
   s_ = new Spectrogramplot(numDataPoints, numRows);
   b_ = new QPushButton("Autoscale");
   connect(b_, SIGNAL(clicked()), this, SLOT(autoscale()));
+  reset_ = new QPushButton("Reset");
+  connect(reset_, SIGNAL(clicked()), this, SLOT(reset()));
 
   tLeft_ = new QwtThermo();
   tLeft_->setPipeWidth(100);
@@ -55,6 +62,7 @@ SpectrumWarsDisplayPlotWidget::SpectrumWarsDisplayPlotWidget(int numDataPoints, 
   vLayout1->addWidget(p_,1);
   vLayout1->addWidget(s_,3);
   vLayout1->addWidget(b_);
+  vLayout1->addWidget(reset_);
 
   QHBoxLayout* hLayout1 = new QHBoxLayout(this);
   hLayout1->addLayout(vLayoutLeft);
@@ -161,6 +169,13 @@ void SpectrumWarsDisplayPlotWidget::autoscale()
   s_->setZAxisScale(min, max);
   p_->setAxisAutoScale(QwtPlot::yLeft, false);
   p_->setAxisScale(QwtPlot::yLeft, min, max);
+}
+
+void SpectrumWarsDisplayPlotWidget::reset()
+{
+  callback_->resetScore();
+  tLeft_->setValue(0);
+  tRight_->setValue(0);
 }
 
 void SpectrumWarsDisplayPlotWidget::timerEvent(QTimerEvent *event)

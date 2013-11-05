@@ -7,10 +7,13 @@
 
 using namespace std;
 
-SpectrumWarsDisplayPlotWrapper::SpectrumWarsDisplayPlotWrapper(int numDataPoints, int numRows)
+SpectrumWarsDisplayPlotWrapper::SpectrumWarsDisplayPlotWrapper(int numDataPoints,
+                                                               int numRows,
+                                                               iris::Controller* master)
     :widget_(NULL)
     ,destroyed_(true)
 {
+  master_ = master;
   if(QCoreApplication::instance() == NULL)
     return; //TODO: throw exception here in Iris
   if(QCoreApplication::instance()->thread() == QThread::currentThread())
@@ -45,9 +48,19 @@ SpectrumWarsDisplayPlotWrapper::~SpectrumWarsDisplayPlotWrapper()
     emit destroyWidgetSignalBlocking();
 }
 
+void SpectrumWarsDisplayPlotWrapper::resetScore()
+{
+  if(master_)
+  {
+    iris::Event e;
+    e.eventName = "resetscore";
+    master_->postEvent(e);
+  }
+}
+
 void SpectrumWarsDisplayPlotWrapper::createWidgetSlot(int numDataPoints, int numRows)
 {
-  widget_ = new SpectrumWarsDisplayPlotWidget(numDataPoints, numRows);
+  widget_ = new SpectrumWarsDisplayPlotWidget(numDataPoints, numRows, this);
   destroyed_ = false;
   widget_->setAttribute(Qt::WA_DeleteOnClose, true);
   connect(widget_, SIGNAL( destroyed() ),

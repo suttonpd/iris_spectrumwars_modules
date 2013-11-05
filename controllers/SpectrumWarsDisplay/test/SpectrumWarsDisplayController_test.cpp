@@ -78,6 +78,7 @@ void threadMain1()
   for(int i=0;i<n;i++)
   {
     Event e;
+    e.eventName = "psdevent";
     e.data.assign(data+i, data+i+n);
     c.processEvent(e);
     boost::this_thread::sleep(boost::posix_time::milliseconds(10));

@@ -2,16 +2,22 @@
 #define SPECTRUMWARSDISPLAYPLOTWRAPPER_H
 
 #include <qapplication.h>
+#ifndef Q_MOC_RUN  // See: https://bugreports.qt-project.org/browse/QTBUG-22829
+#include "irisapi/Controller.h"
+#endif
+
+#include "SWDisplayPlotCallback.h"
 
 class SpectrumWarsDisplayPlotWidget;
 
 class SpectrumWarsDisplayPlotWrapper
-    : QObject
+    : QObject, public SWDisplayPlotCallback
 {
   Q_OBJECT
 
 public:
-  SpectrumWarsDisplayPlotWrapper(int numDataPoints, int numRows);
+  SpectrumWarsDisplayPlotWrapper(int numDataPoints, int numRows
+                                 , iris::Controller* master=NULL);
   ~SpectrumWarsDisplayPlotWrapper();
 
   void plotNewData(float* data, int numPoints);
@@ -28,6 +34,8 @@ public:
   void setLine1(double xLocation, double width);
   void setLine2(double xLocation, double width);
   void setvLine1(double xLocation);
+
+  virtual void resetScore();
 
 public slots:
   void createWidgetSlot(int numDataPoints, int numRows);
@@ -53,6 +61,7 @@ signals:
 
 private:
   SpectrumWarsDisplayPlotWidget* widget_;
+  iris::Controller* master_;
   bool destroyed_;
 };
 

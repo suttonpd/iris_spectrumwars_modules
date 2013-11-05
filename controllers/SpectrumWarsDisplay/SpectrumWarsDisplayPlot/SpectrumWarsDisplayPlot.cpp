@@ -3,9 +3,11 @@
 
 using namespace std;
 
-SpectrumWarsDisplayPlot::SpectrumWarsDisplayPlot(int numDataPoints, int numRows)
+SpectrumWarsDisplayPlot::SpectrumWarsDisplayPlot(int numDataPoints, int numRows,
+                                                 iris::Controller* master)
 {
-  plot_ = new SpectrumWarsDisplayPlotWrapper(numDataPoints, numRows);
+  master_ = master;
+  plot_ = new SpectrumWarsDisplayPlotWrapper(numDataPoints, numRows, master_);
 }
 
 SpectrumWarsDisplayPlot::~SpectrumWarsDisplayPlot()

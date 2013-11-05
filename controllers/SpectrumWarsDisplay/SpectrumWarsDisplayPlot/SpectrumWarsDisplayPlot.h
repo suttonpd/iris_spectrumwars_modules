@@ -2,13 +2,15 @@
 #define SPECTRUMWARSDISPLAYPLOT_H
 
 #include <string>
+#include "irisapi/Controller.h"
 
 class SpectrumWarsDisplayPlotWrapper;
 
 class SpectrumWarsDisplayPlot
 {
 public:
-  SpectrumWarsDisplayPlot(int numDataPoints, int numRows);
+  SpectrumWarsDisplayPlot(int numDataPoints, int numRows,
+                          iris::Controller* master=NULL);
   ~SpectrumWarsDisplayPlot();
 
   template<class Iterator>
@@ -30,6 +32,7 @@ public:
 
 private:
   SpectrumWarsDisplayPlotWrapper* plot_;
+  iris::Controller* master_;
 };
 
 template<class Iterator>

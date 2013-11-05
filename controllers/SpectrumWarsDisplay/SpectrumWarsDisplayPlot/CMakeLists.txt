@@ -16,7 +16,7 @@ ENDIF(QT4_FOUND AND QWT_FOUND)
 ########################################################################
 IF(QT4_FOUND AND QWT_FOUND)
   QT4_WRAP_CPP(MOCSrcs WinnerLabel.h Psdplot.h SpectrumWarsDisplayPlotWidget.h SpectrumWarsDisplayPlotWrapper.h)
-  ADD_LIBRARY(spectrumwarsdisplayplot WinnerLabel.h Psdplot.cpp SpectrumWarsDisplayPlotWidget.cpp SpectrumWarsDisplayPlotWrapper.cpp SpectrumWarsDisplayPlot.cpp ${MOCSrcs})
+  ADD_LIBRARY(spectrumwarsdisplayplot WinnerLabel.h Psdplot.cpp SWDisplayPlotCallback.h SpectrumWarsDisplayPlotWidget.cpp SpectrumWarsDisplayPlotWrapper.cpp SpectrumWarsDisplayPlot.cpp ${MOCSrcs})
   TARGET_LINK_LIBRARIES(spectrumwarsdisplayplot ${QT_LIBRARIES} ${QWT_LIBRARIES} lineplot spectrogramplot)
   IRIS_SET_PIC(spectrumwarsdisplayplot)
   SET(IRIS_HAVE_SPECTRUMWARSDISPLAYPLOT ON CACHE INTERNAL "Has SpectrumWarsDisplayPlot been built?")

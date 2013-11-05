@@ -103,12 +103,19 @@ void SpectrumWarsDisplayController::initialize()
 
 void SpectrumWarsDisplayController::processEvent(Event &e)
 {
-  //We've only subscribed to psdevent
-  vector<float> data;
-  for(int i=0;i<e.data.size();i++)
-    data.push_back(boost::any_cast<float>(e.data[i]));
+  if(e.eventName == "psdevent")
+  {
+    vector<float> data;
+    for(int i=0;i<e.data.size();i++)
+      data.push_back(boost::any_cast<float>(e.data[i]));
 
-  plot_->plotNewData(data.begin(), data.end());
+    plot_->plotNewData(data.begin(), data.end());
+  }
+  if(e.eventName == "resetscore")
+  {
+    countA_ = 0;
+    countB_ = 0;
+  }
 }
 
 void SpectrumWarsDisplayController::destroy()

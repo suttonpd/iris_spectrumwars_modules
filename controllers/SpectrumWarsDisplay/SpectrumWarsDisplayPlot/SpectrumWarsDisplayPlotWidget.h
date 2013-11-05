@@ -5,6 +5,8 @@
 #include <qwidget.h>
 #include <complex>
 
+#include "SWDisplayPlotCallback.h"
+
 class RealDataEvent;
 class Psdplot;
 class Spectrogramplot;
@@ -18,7 +20,9 @@ class SpectrumWarsDisplayPlotWidget
   Q_OBJECT
 
 public:
-  SpectrumWarsDisplayPlotWidget(int numDataPoints, int numRows, QWidget* parent = 0);
+  SpectrumWarsDisplayPlotWidget(int numDataPoints, int numRows,
+                                SWDisplayPlotCallback* callback = NULL,
+                                QWidget* parent = 0);
   virtual ~SpectrumWarsDisplayPlotWidget();
 
 public slots:
@@ -36,6 +40,7 @@ public slots:
   void setLine2(double xLocation, double width);
   void setvLine1(double xLocation);
   void autoscale();
+  void reset();
 
 protected:
   virtual void timerEvent(QTimerEvent *event);
@@ -45,10 +50,12 @@ private:
   Psdplot* p_;
   Spectrogramplot* s_;
   QPushButton* b_;
+  QPushButton* reset_;
   QwtThermo* tLeft_;
   QLabel* lLeft_;
   QwtThermo* tRight_;
   QLabel* lRight_;
+  SWDisplayPlotCallback* callback_;
 
   double* data_;
   int numPoints_;
