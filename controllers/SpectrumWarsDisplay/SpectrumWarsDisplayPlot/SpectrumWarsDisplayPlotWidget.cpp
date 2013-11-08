@@ -176,6 +176,7 @@ void SpectrumWarsDisplayPlotWidget::reset()
   callback_->resetScore();
   tLeft_->setValue(0);
   tRight_->setValue(0);
+  haveWinner_ = false;
 }
 
 void SpectrumWarsDisplayPlotWidget::timerEvent(QTimerEvent *event)

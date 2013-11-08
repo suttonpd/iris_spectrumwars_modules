@@ -71,7 +71,7 @@ void SpectrumWarsDisplayController::subscribeToEvents()
 
 void SpectrumWarsDisplayController::initialize()
 {
-  plot_.reset(new SpectrumWarsDisplayPlot(512, nRows_x));
+  plot_.reset(new SpectrumWarsDisplayPlot(512, nRows_x, this));
   plot_->setTitle("Spectrum Wars");
   plot_->setSpectrogramZAxisScale(0, 1e-6);
   double frequency, rate;
