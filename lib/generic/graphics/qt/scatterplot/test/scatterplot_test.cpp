@@ -63,8 +63,9 @@ void getPoints(Iterator begin, Iterator end)
 {
   for(;begin!=end;begin++)
   {
-    begin->real() = 2*((double)rand()/RAND_MAX)-1;
-    begin->imag() = 2*((double)rand()/RAND_MAX)-1;
+    float r = 2*((double)rand()/RAND_MAX)-1;
+    float i = 2*((double)rand()/RAND_MAX)-1;
+    *begin = Cplx(r,i);
   }
 }
 
@@ -77,7 +78,7 @@ void threadMain1()
   {
     getPoints(data, 1024);
     plot.setNewData(data, 1024);
-    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+    boost::this_thread::sleep(boost::posix_time::milliseconds(100));
   }
 }
 
@@ -90,7 +91,7 @@ void threadMain2()
   {
     getPoints(data, 1024);
     plot.setNewData(data, 1024);
-    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+    boost::this_thread::sleep(boost::posix_time::milliseconds(100));
   }
 }
 
@@ -103,7 +104,7 @@ void threadMain3()
   {
     getPoints(v.begin(), v.end());
     plot.setNewData(v.begin(), v.end());
-    boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+    boost::this_thread::sleep(boost::posix_time::milliseconds(100));
   }
 }
 
