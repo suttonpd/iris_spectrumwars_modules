@@ -53,6 +53,7 @@ ENDMACRO(IRIS_APPEND_NOINSTALL_LIST)
 # entire directory structure.
 ADD_SUBDIRECTORY(Example)
 ADD_SUBDIRECTORY(SpectrogramDisplay)
+ADD_SUBDIRECTORY(SpectrumWarsAutoTx)
 ADD_SUBDIRECTORY(SpectrumWarsDisplay)
 ADD_SUBDIRECTORY(SpectrumWarsRx)
 ADD_SUBDIRECTORY(SpectrumWarsRxCounter)
