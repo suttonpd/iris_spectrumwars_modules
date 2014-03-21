@@ -65,6 +65,7 @@ private:
   std::string frontEndTx_x;       ///< Tx front end component name
   std::string frontEndTxEngine_x; ///< Tx front end component engine name
   std::string spgrmCompName_x;    ///< Spectrogram component name (to subscribe to events)
+  bool randomHop_x;               ///< Ignore sensing and just random hop?
 
   boost::scoped_ptr< boost::thread > thread_;
   bool isRunning_;

@@ -35,6 +35,8 @@
 
 #include "SpectrumWarsAutoTxController.h"
 
+#include <numeric>
+#include <cstdlib>
 #include <sstream>
 #include "irisapi/LibraryDefs.h"
 #include "irisapi/Version.h"
@@ -76,6 +78,8 @@ SpectrumWarsAutoTxController::SpectrumWarsAutoTxController()
                     "phyengine1", false, frontEndTxEngine_x);
   registerParameter("spectrogramcomponent", "Name of spectrogram component",
                     "spectrogram1", false, spgrmCompName_x);
+  registerParameter("randomhop", "Ignore sensing and just random hop?",
+                    "false", true, randomHop_x);
 }
 
 void SpectrumWarsAutoTxController::subscribeToEvents()
@@ -97,8 +101,34 @@ void SpectrumWarsAutoTxController::initialize()
 
 void SpectrumWarsAutoTxController::processEvent(Event &e)
 {
-  //We've only subscribed to psdevent
+  if(e.eventName == "psdevent" && !randomHop_x)
+  {
+    vector<float> data;
+    for(int i=0;i<e.data.size();i++)
+      data.push_back(boost::any_cast<float>(e.data[i]));
 
+    vector<float> pwrs(nChans_);
+    int chanSize = data.size()/(nChans_+1);
+    for(int i=0;i<nChans_;i++)
+    {
+      pwrs[i] = accumulate(data.begin() + i*chanSize + chanSize/2,
+                             data.begin() + (i+1)*chanSize + chanSize/2,
+                             0);
+      pwrs[i] /= chanSize;
+    }
+    uint8_t chan=0;
+    for(int i=0;i<nChans_;i++)
+      if(pwrs[i] < pwrs[chan])
+        chan = i;
+
+    stringstream ss;
+    ss << "Average Channel Powers: ";
+    for(int i=0;i<nChans_;i++)
+      ss << " [" << pwrs[i] << "] ";
+    LOG(LINFO) << ss.str();
+
+    setChannel(chan);
+  }
 }
 
 void SpectrumWarsAutoTxController::destroy()
@@ -110,7 +140,6 @@ void SpectrumWarsAutoTxController::destroy()
 
 void SpectrumWarsAutoTxController::threadLoop()
 {
-  uint8_t count = 0;
   boost::this_thread::sleep(milliseconds(5000));
   try
   {
@@ -122,8 +151,12 @@ void SpectrumWarsAutoTxController::threadLoop()
       openTxGate();
       boost::this_thread::sleep(milliseconds(timeOpenMs_x));
 
-      count++;
-      setChannel(count%nChans_);
+      if(randomHop_x)
+      {
+        //Channel hop here
+        uint8_t chan = rand() % nChans_;
+        setChannel(chan);
+      }
 
       //TODO: Add a delay here to allow data to pass through the USRP
       boost::this_thread::sleep(milliseconds(delayMs_x));
