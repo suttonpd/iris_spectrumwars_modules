@@ -28,51 +28,12 @@ SET(headers
     EndianConversion.h
     FileUtility.h
     FirFilter.h
-    Matlab.h
     RawFileUtility.h
     StackHelper.h
     UdpSocketReceiver.h
     UdpSocketTransmitter.h
 )
 ADD_CUSTOM_TARGET(libgenericutilityheaders SOURCES ${headers})
-
-########################################################################
-# Build the MatlabPlotter lib
-# We build this as a shared lib so that we can add the rpath here
-# and don't have to worry about it elsewhere.
-########################################################################
-MESSAGE(STATUS "Building MatlabPlotter utility.")
-FIND_PACKAGE( MATLAB )
-
-IF (MATLAB_FOUND)
-    INCLUDE_DIRECTORIES(${MATLAB_INCLUDE_DIR})
-    ADD_LIBRARY(matlabplotter STATIC MatlabPlotter.cpp MatlabPlotter.h)
-    TARGET_LINK_LIBRARIES(matlabplotter ${Boost_LIBRARIES} ${MATLAB_LIBRARIES})
-    # We add an rpath to the library so matlab dependencies will be found
-    # while avoiding clashes with system libraries
-    SET_TARGET_PROPERTIES(matlabplotter PROPERTIES BUILD_WITH_INSTALL_RPATH TRUE)
-    SET_TARGET_PROPERTIES(matlabplotter PROPERTIES INSTALL_RPATH ${MATLAB_LIB_DIR})
-    SET(IRIS_HAVE_MATLABPLOTTER ON CACHE INTERNAL "Has MatlabPlotter been built?")
-    IRIS_SET_PIC(matlabplotter)
-ELSE (MATLAB_FOUND)
-    SET(IRIS_HAVE_MATLABPLOTTER OFF CACHE INTERNAL "Has MatlabPlotter been built?")
-ENDIF (MATLAB_FOUND)
-
-########################################################################
-# Build the PythonPlotter lib
-########################################################################
-MESSAGE(STATUS "Building PythonPlotter utility.")
-FIND_PACKAGE( PythonLibs )
-
-IF (PYTHONLIBS_FOUND)
-    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
-    ADD_LIBRARY(pythonplotter STATIC PythonPlotter.cpp PythonPlotter.h)
-    TARGET_LINK_LIBRARIES(pythonplotter ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
-    SET(IRIS_HAVE_PYTHONPLOTTER ON CACHE INTERNAL "Has PythonPlotter been built?")
-    IRIS_SET_PIC(pythonplotter)
-ELSE (PYTHONLIBS_FOUND)
-    SET(IRIS_HAVE_PYTHONPLOTTER OFF CACHE INTERNAL "Has PythonPlotter been built?")
-ENDIF (PYTHONLIBS_FOUND)
 
 ########################################################################
 # Add the subdirectories
