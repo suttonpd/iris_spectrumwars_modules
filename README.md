@@ -1,6 +1,6 @@
-# Iris_Modules Project
+# Iris_SpectrumWars_Modules Project
 
-Iris is a software architecture for building highly reconfigurable radio networks using a component-based design. The architecture comprises two repositories - Iris_Core and Iris_Modules. Iris_Core contains the core part of the architecture such as parsers, managers and engines. Iris_Modules contain the components which can be used to create your software radio such as PHY-layer components and radio controllers.
+This repositories contains Iris modules for the "Spectrum Wars" dynamic spectrum access game and demonstration. Iris is a software architecture for building highly reconfigurable radio networks using a component-based design. The architecture comprises separate core and modules repositories. Iris_Core contains the core part of the architecture such as parsers, managers and engines. Iris modules contains the PHY-layer components and radio controllers used in "Spectrum Wars".
 
 ## Description
 
@@ -18,16 +18,11 @@ Required:
 * CMake 2.6 or later - http://www.cmake.org/
 * Boost 1.46 or later - http://www.boost.org/
 * Iris_Core
-
-Optional:
 * Qt 4.8 - http://qt-project.org/ (For graphical widgets)
 * Qwt 6 - http://qwt.sourceforge.net/ (For graphical widgets)
 * UHD - http://code.ettus.com/redmine/ettus/projects/uhd/wiki (For using USRP hardware)
 * FFTW - http://www.fftw.org/ (For FFT transforms)
 * Liquid-DSP - https://github.com/jgaeddert/liquid-dsp (For some PHY components)
-* Google Protocol Buffers - https://developers.google.com/protocol-buffers/ (For some Stack components)
-* Python - http://www.python.org/ (For PythonPlotter widget)
-* Matlab (For MatlabTemplate PHY component, MatlabPlotter widget)
 
 ## Where To Get Help
 

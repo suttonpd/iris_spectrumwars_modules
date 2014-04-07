@@ -33,4 +33,3 @@ SET(COMPONENTS_GPP_STACK_DIR ${COMPONENTS_GPP_DIR}/stack)
 # executable to run. The same process will walk through the project's 
 # entire directory structure.
 ADD_SUBDIRECTORY(phy)
-ADD_SUBDIRECTORY(stack)
