@@ -1,6 +1,8 @@
 # Iris_SpectrumWars_Modules Project
 
-This repositories contains Iris modules for the "Spectrum Wars" dynamic spectrum access game and demonstration. Iris is a software architecture for building highly reconfigurable radio networks using a component-based design. The architecture comprises separate core and modules repositories. Iris_Core contains the core part of the architecture such as parsers, managers and engines. Iris modules contains the PHY-layer components and radio controllers used in "Spectrum Wars".
+This repository contains Iris modules for the "Spectrum Wars" dynamic spectrum access game and demonstration.
+
+Iris is a software architecture for building highly reconfigurable radio networks using a component-based design. The architecture comprises separate core and modules repositories. Iris_Core contains the core part of the architecture such as parsers, managers and engines. Iris modules contains the PHY-layer components and radio controllers used in "Spectrum Wars".
 
 ## Description
 
